@@ -32,12 +32,12 @@ app.use(cookieParser());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Serve static files from the 'frontend/dist' directory (Vite build output)
-app.use(express.static(path.join(__dirname, '../frontend/dist')));
+// Serve static files from the 'frontend' directory
+app.use(express.static(path.join(__dirname, '../frontend')));
 
 // Serve index.html for the root route
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
+  res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
 });
 
 // Routes
