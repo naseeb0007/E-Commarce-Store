@@ -2,8 +2,10 @@ import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import bodyParser from 'body-parser';
-import path from "path"; // Required to resolve paths
+import path from 'path';
+import { fileURLToPath } from 'url';
 
+// Import routes
 import authRoutes from "./routes/auth.route.js";
 import productRoutes from "./routes/product.route.js";
 import couponRoutes from "./routes/coupon.route.js";
@@ -26,9 +28,17 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: true })); // For form d
 app.use(express.json()); // this allows you to parse JSON bodies
 app.use(cookieParser());
 
-// Serve static files from the src directory
-const __dirname = path.resolve(); // Resolve the current directory
-app.use(express.static(path.join(__dirname, "src"))); // Make "src" folder public
+// Resolve the directory name
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve static files from the 'frontend/src' directory
+app.use(express.static(path.join(__dirname, '../frontend/src')));
+
+// Serve index.html for the root route
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/src', 'index.html'));
+});
 
 // Routes
 app.use("/api/auth", authRoutes);
@@ -37,11 +47,6 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/coupons", couponRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/analytics", analyticstRoutes);
-
-// Serve index.html when visiting the root URL
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "src", "index.html"));
-});
 
 // Connect to the database
 connectDB();
