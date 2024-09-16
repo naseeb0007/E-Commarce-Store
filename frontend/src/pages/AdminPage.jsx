@@ -6,6 +6,7 @@ import AnalyticsTab from "../components/AnalyticsTab";
 import CreateProductForm from "../components/CreateProductForm";
 import ProductsList from "../components/ProductsList";
 import { useProductStore } from "../stores/useProductStore";
+import './AdminPage.css'; // Import the CSS file
 
 const tabs = [
 	{ id: "create", label: "Create Product", icon: PlusCircle },
@@ -22,10 +23,10 @@ const AdminPage = () => {
 	}, [fetchAllProducts]);
 
 	return (
-		<div className='min-h-screen relative overflow-hidden'>
-			<div className='relative z-10 container mx-auto px-4 py-16'>
+		<div className='admin-page-container'>
+			<div className='header'>
 				<motion.h1
-					className='text-4xl font-bold mb-8 text-emerald-400 text-center'
+					className='header-title'
 					initial={{ opacity: 0, y: -20 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.8 }}
@@ -33,18 +34,14 @@ const AdminPage = () => {
 					Admin Dashboard
 				</motion.h1>
 
-				<div className='flex justify-center mb-8'>
+				<div className='tab-buttons'>
 					{tabs.map((tab) => (
 						<button
 							key={tab.id}
 							onClick={() => setActiveTab(tab.id)}
-							className={`flex items-center px-4 py-2 mx-2 rounded-md transition-colors duration-200 ${
-								activeTab === tab.id
-									? "bg-emerald-600 text-white"
-									: "bg-gray-700 text-gray-300 hover:bg-gray-600"
-							}`}
+							className={`tab-button ${activeTab === tab.id ? 'active' : 'inactive'}`}
 						>
-							<tab.icon className='mr-2 h-5 w-5' />
+							<tab.icon className='tab-icon' />
 							{tab.label}
 						</button>
 					))}
@@ -56,4 +53,5 @@ const AdminPage = () => {
 		</div>
 	);
 };
+
 export default AdminPage;
